@@ -1,0 +1,9 @@
+# Shared ignore rules are in the repository root.
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Bb]uild/
+/[Bb]uilds/
+/[Rr]ecordings/

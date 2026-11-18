@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/KaiRASoccerIntegrated/Scenes/SoccerStartMenu.unity
+    guid: 912106b313ca43edbc8bd8ce7d1da7ab
+  - enabled: 1
+    path: Assets/KaiRASoccerIntegrated/Scenes/SoccerHumanVsAI.unity
+    guid: 2d20c0a37d7643be9fe13f7718c5dbae
+  - enabled: 1
+    path: Assets/KaiRASoccerIntegrated/Scenes/SoccerResult.unity
+    guid: 5cbede387c6a42869edecdd408e5a251
+  m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

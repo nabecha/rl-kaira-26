@@ -1,0 +1,66 @@
+# Unity-generated files and local settings (all projects/packages)
+**/[Ll]ibrary/
+**/[Tt]emp/
+**/[Oo]bj/
+**/[Ll]ogs/
+**/[Uu]ser[Ss]ettings/
+**/[Bb]uild/
+**/[Bb]uilds/
+**/[Rr]ecordings/
+**/MemoryCaptures/
+**/ProfilerCaptures/
+**/CrashReports/
+**/sysinfo.txt
+**/csharp_timers.json
+**/Assets/ML-Agents/Timers*
+
+# Training outputs
+/results/
+/models/
+/summaries/
+/envs/
+*.pt
+*.pth
+*.ckpt
+*.tfevents.*
+
+# IDE and OS-generated files
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.sln.DotSettings
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.pidb.meta
+*.pdb
+*.booproj
+*.svd
+*.log
+.DS_Store
+Thumbs.db
+Desktop.ini
+__pycache__/
+.venv/
+venv/
+
+# Local credentials
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+
+# Exported builds
+*.apk
+*.aab
+*.exe
+*.app
+*.x86
+*.x86_64
+*.unitypackage

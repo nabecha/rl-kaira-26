@@ -28,6 +28,54 @@ public class KaiRASoccerStadiumPreview : MonoBehaviour
     bool m_RestoreShadowDistance;
     int m_Width;
     int m_Height;
+    static bool s_DemoPaused;
+    bool m_IsPaused;
+    float m_TimeScaleBeforePause;
+    int m_FrameRateBeforePause;
+    int m_VSyncBeforePause;
+
+    public bool IsPaused => m_IsPaused;
+
+    public void TogglePause()
+    {
+        if (m_Camera == null) return;
+        s_DemoPaused = !m_IsPaused;
+        if (s_DemoPaused) PauseDemo();
+        else ResumeDemo();
+    }
+
+    void PauseDemo()
+    {
+        if (m_IsPaused) return;
+        m_TimeScaleBeforePause = Time.timeScale;
+        m_FrameRateBeforePause = Application.targetFrameRate;
+        m_VSyncBeforePause = QualitySettings.vSyncCount;
+        m_IsPaused = true;
+        // Academy inference and physics both run in FixedUpdate; stop both together.
+        Time.timeScale = 0f;
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 30;
+    }
+
+    void ResumeDemo()
+    {
+        if (!m_IsPaused) return;
+        Time.timeScale = m_TimeScaleBeforePause;
+        QualitySettings.vSyncCount = m_VSyncBeforePause;
+        Application.targetFrameRate = m_FrameRateBeforePause;
+        m_IsPaused = false;
+    }
+
+    void OnEnable()
+    {
+        if (m_Camera != null && s_DemoPaused) PauseDemo();
+    }
+
+    void OnDisable()
+    {
+        // Gameplay must run normally even when entered from a stopped demo.
+        ResumeDemo();
+    }
 
     public static float MenuScale => Mathf.Max(0.01f,
         Mathf.Min(Screen.height / 760f, Screen.width * 0.32f / 420f));
@@ -120,6 +168,7 @@ public class KaiRASoccerStadiumPreview : MonoBehaviour
 
         LayoutCamera();
         root.SetActive(true);
+        if (s_DemoPaused) PauseDemo();
     }
 
     void Update()

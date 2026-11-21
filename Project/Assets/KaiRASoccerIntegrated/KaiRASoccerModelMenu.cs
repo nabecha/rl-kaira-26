@@ -15,7 +15,8 @@ public class KaiRASoccerModelMenu : MonoBehaviour
     static readonly long[] s_DifficultySteps = { 499706, 1999860, 3999998, 7999989, 18858676 };
     static int RankingMenuIndex => SoccerLeaderboard.DifficultyNames.Length;
     static int ModelMenuIndex => RankingMenuIndex + 1;
-    static int MenuItemCount => RankingMenuIndex + 2;
+    static int DemoPauseMenuIndex => RankingMenuIndex + 2;
+    static int MenuItemCount => RankingMenuIndex + 3;
     [SerializeField] ModelAsset[] models;
     [SerializeField] KaiRASoccerStadiumPreview stadiumPreview;
     ModelAsset m_PreviewModel;
@@ -187,6 +188,14 @@ public class KaiRASoccerModelMenu : MonoBehaviour
             return;
         }
 
+        var toggleDemo = keyboard != null && keyboard.pKey.wasPressedThisFrame;
+        toggleDemo |= gamepad != null && gamepad.buttonWest.wasPressedThisFrame;
+        if (toggleDemo && stadiumPreview != null)
+        {
+            stadiumPreview.TogglePause();
+            return;
+        }
+
         if (direction != 0)
         {
             m_SelectedMenuItem =
@@ -207,7 +216,11 @@ public class KaiRASoccerModelMenu : MonoBehaviour
 
         if (submit)
         {
-            if (m_SelectedMenuItem == ModelMenuIndex)
+            if (m_SelectedMenuItem == DemoPauseMenuIndex)
+            {
+                if (stadiumPreview != null) stadiumPreview.TogglePause();
+            }
+            else if (m_SelectedMenuItem == ModelMenuIndex)
             {
                 m_ShowModels = true;
             }
@@ -268,21 +281,21 @@ public class KaiRASoccerModelMenu : MonoBehaviour
         var contentWidth = panelWidth - padding * 2f;
         var buttonHeight = Mathf.Clamp(panelHeight * 0.075f, 36f, 54f);
         var buttonSpacing = panelHeight * 0.015f;
-        var y = panel.y + panelHeight * 0.06f;
+        var y = panel.y + panelHeight * 0.04f;
 
         GUI.Label(
             new Rect(panel.x + padding, y, contentWidth, panelHeight * 0.12f),
             "進化するAIサッカー",
             m_TitleStyle
         );
-        y += panelHeight * 0.14f;
+        y += panelHeight * 0.12f;
 
         GUI.Label(
             new Rect(panel.x + padding, y, contentWidth, panelHeight * 0.07f),
             "レベルを選択してください",
             m_InstructionStyle
         );
-        y += panelHeight * 0.09f;
+        y += panelHeight * 0.08f;
 
         for (var i = 0; i < SoccerLeaderboard.DifficultyNames.Length; i++)
         {
@@ -310,6 +323,16 @@ public class KaiRASoccerModelMenu : MonoBehaviour
         {
             m_SelectedMenuItem = ModelMenuIndex;
             m_ShowModels = true;
+        }
+        GUI.backgroundColor = originalColor;
+        y += 40f;
+        GUI.backgroundColor = m_SelectedMenuItem == DemoPauseMenuIndex ? new Color(0.65f, 0.85f, 1f) : originalColor;
+        var pauseLabel = stadiumPreview != null && stadiumPreview.IsPaused ? "デモを再開" : "デモを停止";
+        if (GUI.Button(new Rect(panel.x + padding, y, contentWidth, 36f),
+            (m_SelectedMenuItem == DemoPauseMenuIndex ? "▶ " : "") + pauseLabel + "（P / □）"))
+        {
+            m_SelectedMenuItem = DemoPauseMenuIndex;
+            if (stadiumPreview != null) stadiumPreview.TogglePause();
         }
         GUI.backgroundColor = originalColor;
         y += 40f;
